@@ -1,0 +1,254 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body,
+html {
+  height: 100%;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Основной контейнер */
+/* Основной контейнер */
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+  width: 100vw;
+  overflow: hidden;
+}
+
+/* Блок с кнопками и настройками изображений */
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 20px;
+  /* Расстояние между кнопками и блоком с инпутами */
+}
+
+/* Блок с кнопками */
+.buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.btn {
+  margin: 0 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 150px;
+  height: 45px;
+  text-align: center;
+  background-color: #007BFF;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Roboto', Arial, sans-serif;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Блок с инпутами для изображения */
+.image-settings {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  /* Расстояние между инпутами */
+}
+
+.image-settings input {
+  padding: 8px;
+  border: 1px solid #0056b3;
+  border-radius: 8px;
+  width: 150px;
+  font-family: 'Roboto', Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+/* Контейнер для редактора и вывода */
+.editor-output-container {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+  height: calc(100% - 80px);
+  width: 100%;
+}
+
+/* Левый блок с редактором */
+.editor-container {
+  flex: 1;
+  width: 50%;
+  padding-right: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background-color: #fff;
+  overflow-y: auto;
+}
+
+#editor-container {
+  height: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+/* Правый блок с результатом */
+.output-container {
+  flex: 1;
+  width: 50%;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  height: 100%;
+  background-color: #fff;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body,
+html {
+  height: 100%;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Основной контейнер */
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+  width: 100vw;
+  overflow: hidden;
+}
+
+/* Блок с кнопками и настройками изображений */
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 20px;
+  /* Расстояние между кнопками и блоком с инпутами */
+}
+
+/* Блок с кнопками */
+.buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.btn {
+  margin: 0 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 150px;
+  height: 45px;
+  text-align: center;
+  background-color: #007BFF;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Roboto', Arial, sans-serif;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Блок с инпутами для изображения */
+.image-settings {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  /* Расстояние между инпутами */
+}
+
+.image-settings input {
+  padding: 8px;
+  border: 1px solid #0056b3;
+  border-radius: 8px;
+  width: 150px;
+  font-family: 'Roboto', Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+/* Контейнер для редактора и вывода */
+.editor-output-container {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+  height: calc(100% - 80px);
+  width: 100%;
+}
+
+/* Левый блок с редактором */
+.editor-container {
+  flex: 1;
+  width: 50%;
+  padding-right: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background-color: #fff;
+  overflow-y: auto;
+}
+
+#editor-container {
+  height: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+/* Правый блок с результатом */
+.output-container {
+  flex: 1;
+  width: 50%;
+  padding-left: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  height: 100%;
+  background-color: #fff;
+}

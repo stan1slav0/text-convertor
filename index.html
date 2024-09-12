@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text Editor</title>
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="./style.css">
+  <script src="./script.js"></script>
+</head>
+
+<body>
+
+  <div class="container">
+    <!-- Блок с кнопками и инпутами для изображений -->
+    <div class="controls">
+      <!-- Блок с кнопками -->
+      <div class="buttons">
+        <button class="btn" id="get-html-btn">HTML</button>
+        <button class="btn" id="get-mjml-btn">MJML</button>
+        <button class="btn" id="preview-btn">Preview</button>
+        <button class="btn" id="copy-btn">Copy</button>
+      </div>
+
+      <!-- Блок с инпутами для изображения -->
+      <div class="image-settings">
+        <input type="text" id="image-url" placeholder="Image URL">
+        <input type="text" id="image-width" placeholder="Width" value="450">
+        <input type="text" id="image-alt" placeholder="Alt Text" value="Video Preview">
+        <input type="text" id="image-link" readonly placeholder="No images">
+        <button class="btn" id="copy-image-link-btn">Copy Img Link</button>
+      </div>
+    </div>
+
+    <!-- Контейнер для редактора и вывода -->
+    <div class="editor-output-container">
+      <!-- Левый блок с редактором -->
+      <div class="editor-container">
+        <div id="editor-container"></div>
+      </div>
+
+      <!-- Правый блок с результатом -->
+      <div class="output-container" id="output-container"></div>
+    </div>
+  </div>
+
+  <!-- Подключаем QuillJS -->
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+</body>
+
+</html>
