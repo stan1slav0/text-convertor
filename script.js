@@ -1,6 +1,16 @@
 document.addEventListener("DOMContentLoaded", function () {
   var quill = new Quill('#editor-container', {
-    theme: 'snow'
+    theme: 'snow',
+    modules: {
+      toolbar: [
+        [{ 'header': [1, 2, false] }],
+        ['bold', 'italic', 'underline'],    // Стандартные стили текста
+        [{ 'color': [] }, { 'background': [] }],  // Параметры цвета текста и фона
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+        ['link', 'image'],                   // Вставка ссылки и изображения
+        ['clean']                             // Очистить форматирование
+      ]
+    }
   })
 
   var outputContainer = document.getElementById('output-container')
@@ -44,7 +54,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // Первоначальная проверка
   updateImageLink()
 
-  // Функция для обработки HTML-кода
   document.getElementById('get-html-btn').addEventListener('click', function () {
     var html = quill.root.innerHTML
 
@@ -61,9 +70,19 @@ document.addEventListener("DOMContentLoaded", function () {
     // Финальная проверка перед выводом
     html = finalCleanup(html)
 
-    outputContainer.textContent = html  // Отображаем результат в виде текста (HTML-код)
+    // Форматирование HTML с использованием Prism.js
+    var formattedHtml = Prism.highlight(html, Prism.languages.html, 'html')
+
+    // Добавляем подсвеченный код в контейнер с использованием <pre><code>
+    outputContainer.innerHTML = `<pre class="line-numbers"><code class="language-html">${formattedHtml}</code></pre>`
+
+    // Обновляем стиль для вывода
+    outputContainer.style.overflowY = 'scroll'
+    outputContainer.style.overflowX = 'auto'
     currentView = 'html'  // Устанавливаем текущую вкладку как 'html'
   })
+
+
 
   // Функция для предварительного просмотра (Preview)
   document.getElementById('preview-btn').addEventListener('click', function () {
@@ -79,15 +98,18 @@ document.addEventListener("DOMContentLoaded", function () {
       html = wrapInTableStructure(html) // Обычная структура без картинки
     }
 
+    // Финальная проверка перед выводом
+    html = finalCleanup(html)
+
     outputContainer.innerHTML = html  // Отображаем результат в виде HTML (Preview)
     currentView = 'preview'  // Устанавливаем текущую вкладку как 'preview'
   })
 
-  // Функция для обработки MJML-кода
+  // Подключаем слушатель для кнопки MJML
   document.getElementById('get-mjml-btn').addEventListener('click', function () {
     var html = quill.root.innerHTML
 
-    // Применяем всю логику для MJML-версии
+    // Обрабатываем HTML для MJML
     html = processHtml(html)
 
     // Определяем структуру: с картинкой или без
@@ -97,9 +119,26 @@ document.addEventListener("DOMContentLoaded", function () {
       html = wrapInTableStructureMJML(html) // Обычная структура без картинки для MJML
     }
 
-    outputContainer.textContent = html  // Отображаем результат в виде текста (MJML-код)
-    currentView = 'mjml'  // Устанавливаем текущую вкладку как 'mjml'
+    // Применяем форматирование MJML-кода
+    const formattedMJML = html_beautify(html, {
+      indent_size: 2, // Размер табуляции
+      wrap_line_length: 80, // Максимальная длина строки перед переносом
+      preserve_newlines: true, // Сохраняем новые строки
+      max_preserve_newlines: 2, // Максимум двух пустых строк подряд
+      unformatted: ['code', 'pre'] // Теги, которые не форматируются
+    })
+
+    // Выводим форматированный MJML код в контейнер
+    outputContainer.textContent = formattedMJML
+    currentView = 'mjml' // Устанавливаем текущую вкладку как 'mjml'
+
+    // Применяем стили для вывода
+    outputContainer.style.fontSize = '14px' // Уменьшаем шрифт для лучшего отображения
+    outputContainer.style.overflowX = 'auto' // Добавляем горизонтальный скролл при необходимости
+    outputContainer.style.whiteSpace = 'pre-wrap' // Перенос длинных строк
+    outputContainer.style.tabSize = '2' // Устанавливаем ширину табуляции
   })
+
 
   // Основная функция обработки HTML-кода
   // Основная функция обработки HTML-кода
@@ -118,11 +157,20 @@ document.addEventListener("DOMContentLoaded", function () {
       "#4A86E8", "rgb(74, 134, 232)", "#C9DAF8", "rgb(201, 218, 248)",
       "#A4C2F4", "rgb(164, 194, 244)", "#6D9EEB", "rgb(109, 158, 235)",
       "#1155CC", "rgb(17, 85, 204)", "#1C4587", "rgb(28, 69, 135)",
-      "#3C78D8", "rgb(60, 120, 216)", "rgb(17, 85, 204)", "rgb(0, 0, 255)"
+      "#3C78D8", "rgb(60, 120, 216)", "rgb(17, 85, 204)", "rgb(0, 0, 255)", "rgb(51, 51, 255)", "rgb(0, 71, 178)"
     ]
 
     // Конструируем регулярное выражение для проверки цвета
     const colorRegex = new RegExp(`color:\\s*(?:${allowedColors.map(color => color.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'i')
+
+    // Проверяем и заменяем теги <a> с допустимым цветом на вашу ссылку
+    html = html.replace(/<a[^>]*href=["']http[^"']+["'][^>]*style=["'][^"']*(color:\s*[^;"']+)[^"']*["'][^>]*>(.*?)<\/a>/gi, function (match, styleAttr, content) {
+      if (colorRegex.test(styleAttr)) {
+        // Заменяем на вашу ссылку
+        return `<a href="urlhere" style="font-family:'Roboto', Arial, Helvetica, sans-serif;text-decoration: underline;font-size:18px;font-weight: 700;">${content}</a>`
+      }
+      return match // Если цвет не подходит, оставляем как есть
+    })
 
     // Регулярное выражение для замены <span> с допустимым цветом на ссылку <a>, включая возможные <em> и <strong>
     html = html.replace(/<span[^>]*style=["'][^"']*(color:\s*[^;"']+);?[^"']*["'][^>]*>(.*?)<\/span>/gi, function (match, styleAttr, content) {
@@ -223,20 +271,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Функция для финальной проверки и удаления лишних <br><br>
   function finalCleanup(html) {
-    // Убираем <br><br> перед ссылкой <a>, если они идут перед картинкой
-    html = html.replace(/(<br\s*\/?>\s*){2,}(?=<a href="urlhere"[^>]*>)/gi, '')
+    // Убираем <br><br> перед началом строки <tr>, если это не внутри тегов, таких как <a> или <span>
+    html = html.replace(/(<br\s*\/?>\s*){2,}(?=\s*<tr>\s*<td[^>]*>\s*<span[^>]*>)/gi, '')
 
-    // Убираем лишние <br><br> перед текстом, если они следуют за картинкой
-    html = html.replace(/(<br\s*\/?>\s*){2,}(?=<span[^>]*>\s*Click here)/gi, '')
+    // Убираем <br><br> перед началом любой строки <tr>
+    html = html.replace(/(<br\s*\/?>\s*){2,}(?=\s*<tr>)/gi, '')
 
-    // Убираем лишние <br><br>, но сохраняем </span></td></tr>
-    html = html.replace(/(<br\s*\/?>\s*){2,}(?=<\/span>\s*<\/td>\s*<\/tr>)/gi, '')
+    // Убираем <br><br> перед картинкой и ссылкой
+    html = html.replace(/(<br\s*\/?>\s*){2,}(?=\s*<a href="[^"]+"[^>]*>\s*<img[^>]*>)/gi, '')
 
-    // Удаляем <br><br> после картинки
-    html = html.replace(/(<br\s*\/?>\s*){2,}(?=<\/a>\s*<\/td>\s*<\/tr>\s*<tr>\s*<td[^>]*>)/gi, '')
+    // Убираем <br><br> после картинки, если они идут после <img>
+    html = html.replace(/(<img[^>]*>\s*)(<br\s*\/?>\s*){2,}/gi, '$1')
+
+    // Убираем <br><br> перед ссылкой внутри <span>
+    html = html.replace(/(<br\s*\/?>\s*){2,}(?=\s*<span[^>]*>\s*<a href="[^"]+"[^>]*>)/gi, '')
+
+    // Убираем лишние <br><br> перед закрывающим тегом </span></td></tr>
+    html = html.replace(/(<br\s*\/?>\s*){2,}(?=\s*<\/span>\s*<\/td>\s*<\/tr>)/gi, '')
+
+    // Убираем <br><br>, если они идут перед текстом внутри <td><span>
+    html = html.replace(/(<br\s*\/?>\s*){2,}(?=\s*<span[^>]*>)/gi, '')
 
     return html
   }
+
+
+
+
 
 
 

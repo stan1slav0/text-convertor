@@ -156,14 +156,38 @@ body {
   overflow: hidden;
 }
 
-/* Блок с кнопками и настройками изображений */
-.controls {
+/* Стили для инпутов */
+.image-setting {
   display: flex;
-  justify-content: center;
   align-items: center;
-  margin-bottom: 20px;
-  gap: 20px;
-  /* Расстояние между кнопками и блоком с инпутами */
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.image-setting label {
+  margin-right: 10px;
+  width: 80px;
+}
+
+.image-setting input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  flex: 1;
+  margin-right: 10px;
+}
+
+.copy-link-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.copy-link-btn:hover {
+  background-color: #218838;
 }
 
 /* Блок с кнопками */
@@ -192,24 +216,6 @@ body {
 .btn:hover {
   background-color: #0056b3;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
-/* Блок с инпутами для изображения */
-.image-settings {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  /* Расстояние между инпутами */
-}
-
-.image-settings input {
-  padding: 8px;
-  border: 1px solid #0056b3;
-  border-radius: 8px;
-  width: 150px;
-  font-family: 'Roboto', Arial, sans-serif;
-  box-sizing: border-box;
 }
 
 /* Контейнер для редактора и вывода */
@@ -251,4 +257,5 @@ body {
   overflow-y: auto;
   height: 100%;
   background-color: #fff;
+  white-space: normal;
 }
